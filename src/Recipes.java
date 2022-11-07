@@ -68,10 +68,33 @@ public class Recipes {
                     catch (Exception e) {
                         System.out.println(e);
                     }
-
                     break;
+
                 case 3:
                     System.out.println("search selected");
+                    System.out.println("Enter the name : ");
+                    name = scanner.next();
+                    try {
+                        Class.forName("com.mysql.jdbc.Driver");
+                        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/recipedb","root","");
+                        String sql = "SELECT `name`, `discription`, `ingredients`, `price` FROM `recipes` WHERE `name`='"+name+"'";
+                        Statement stmt = con.createStatement();
+                        ResultSet rs = stmt.executeQuery(sql);
+                        while (rs.next()) {
+                            String getName = rs.getString("name");
+                            String getDiscription = rs.getString("discription");
+                            String getIngredients = rs.getString("ingredients");
+                            String getPrice = rs.getString("price");
+                            System.out.println("name="+getName);
+                            System.out.println("discription="+getDiscription);
+                            System.out.println("ingredients="+getIngredients);
+                            System.out.println("price="+getPrice+"\n");
+                        }
+                        }
+
+                    catch (Exception e) {
+                        System.out.println(e);
+                    }
                     break;
                 case 4:
                     System.out.println("delete selected");
