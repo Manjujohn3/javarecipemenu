@@ -1,6 +1,4 @@
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
+import java.sql.*;
 import java.util.Scanner;
 
 public class Recipes {
@@ -50,6 +48,27 @@ public class Recipes {
 
                 case 2:
                     System.out.println("view selected");
+                    try {
+                        Class.forName("com.mysql.jdbc.Driver");
+                        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/recipedb", "root", "");
+                        String sql = "SELECT `name`, `discription`, `ingredients`, `price` FROM `recipes`";
+                        Statement stmt = con.createStatement();
+                        ResultSet rs = stmt.executeQuery(sql);
+                        while (rs.next()) {
+                            String getName = rs.getString("name");
+                            String getDiscription = rs.getString("discription");
+                            String getIngredients = rs.getString("ingredients");
+                            String getPrice = rs.getString("price");
+                            System.out.println("name="+getName);
+                            System.out.println("discription="+getDiscription);
+                            System.out.println("ingredients="+getIngredients);
+                            System.out.println("price="+getPrice+"\n");
+                        }
+                    }
+                    catch (Exception e) {
+                        System.out.println(e);
+                    }
+
                     break;
                 case 3:
                     System.out.println("search selected");
