@@ -1,3 +1,6 @@
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.util.Scanner;
 
 public class Recipes {
@@ -21,7 +24,30 @@ public class Recipes {
             switch (choice) {
                 case 1:
                     System.out.println("insert recipes selected");
+                    System.out.println("enter the name:");
+                    String name = scanner.next();
+                    System.out.println("enter the discription:");
+                    String discription = scanner.next();
+                    System.out.println("enter the ingredients:");
+                    String ingredients = scanner.next();
+                    System.out.println("enter the price:");
+                    int price = scanner.nextInt();
+
+                    try {
+                        Class.forName("com.mysql.jdbc.Driver");
+                        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/recipedb", "root", "");
+                        String sql = "INSERT INTO `recipes`(`name`, `discription`, `ingredients`, `price`) VALUES (?,?,?,?)";
+                        PreparedStatement stmt = con.prepareStatement(sql);
+                        stmt.setString(1, name);
+                        stmt.setString(2, discription);
+                        stmt.setString(3, ingredients);
+                        stmt.setInt(4, price);
+                        stmt.executeUpdate();
+                    } catch (Exception e) {
+                        System.out.println(e);
+                    }
                     break;
+
                 case 2:
                     System.out.println("view selected");
                     break;
