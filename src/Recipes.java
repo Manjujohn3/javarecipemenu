@@ -114,6 +114,26 @@ public class Recipes {
                     break;
                 case 5:
                     System.out.println("update selected");
+                    System.out.println("enter the name:");
+                    name = scanner.next();
+                    System.out.println("enter the discription to be updated:");
+                    discription = scanner.next();
+                    System.out.println("enter the ingredients to be updated:");
+                    ingredients = scanner.next();
+                    System.out.println("enter the price to be updated:");
+                    price = scanner.nextInt();
+                    try{
+                        Class.forName("com.mysql.jdbc.Driver");
+                        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/recipedb", "root", "");
+                        String sql = "UPDATE `recipes` SET `name`='"+name+"',`discription`='"+discription+"',`ingredients`='"+ingredients+"',`price`='"+String.valueOf(price)+"' WHERE `name`='"+name+"'";
+                        Statement stmt = con.createStatement();
+                        stmt.executeUpdate(sql);
+                        System.out.println("Updated successfully");
+                    }
+                    catch (Exception e){
+                        System.out.println(e);
+                    }
+
                     break;
                 case 6:
                     System.out.println("Exit");
