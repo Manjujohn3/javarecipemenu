@@ -1,3 +1,4 @@
+import java.sql.*;
 import java.util.Scanner;
 
 public class Recipes {
@@ -21,18 +22,118 @@ public class Recipes {
             switch (choice) {
                 case 1:
                     System.out.println("insert recipes selected");
+                    System.out.println("enter the name:");
+                    String name = scanner.next();
+                    System.out.println("enter the discription:");
+                    String discription = scanner.next();
+                    System.out.println("enter the ingredients:");
+                    String ingredients = scanner.next();
+                    System.out.println("enter the price:");
+                    int price = scanner.nextInt();
+
+                    try {
+                        Class.forName("com.mysql.jdbc.Driver");
+                        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/recipedb", "root", "");
+                        String sql = "INSERT INTO `recipes`(`name`, `discription`, `ingredients`, `price`) VALUES (?,?,?,?)";
+                        PreparedStatement stmt = con.prepareStatement(sql);
+                        stmt.setString(1, name);
+                        stmt.setString(2, discription);
+                        stmt.setString(3, ingredients);
+                        stmt.setInt(4, price);
+                        stmt.executeUpdate();
+                    } catch (Exception e) {
+                        System.out.println(e);
+                    }
                     break;
+
                 case 2:
                     System.out.println("view selected");
+                    try {
+                        Class.forName("com.mysql.jdbc.Driver");
+                        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/recipedb", "root", "");
+                        String sql = "SELECT `name`, `discription`, `ingredients`, `price` FROM `recipes`";
+                        Statement stmt = con.createStatement();
+                        ResultSet rs = stmt.executeQuery(sql);
+                        while (rs.next()) {
+                            String getName = rs.getString("name");
+                            String getDiscription = rs.getString("discription");
+                            String getIngredients = rs.getString("ingredients");
+                            String getPrice = rs.getString("price");
+                            System.out.println("name="+getName);
+                            System.out.println("discription="+getDiscription);
+                            System.out.println("ingredients="+getIngredients);
+                            System.out.println("price="+getPrice+"\n");
+                        }
+                    }
+                    catch (Exception e) {
+                        System.out.println(e);
+                    }
                     break;
+
                 case 3:
                     System.out.println("search selected");
+                    System.out.println("Enter the name : ");
+                    name = scanner.next();
+                    try {
+                        Class.forName("com.mysql.jdbc.Driver");
+                        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/recipedb","root","");
+                        String sql = "SELECT `name`, `discription`, `ingredients`, `price` FROM `recipes` WHERE `name`='"+name+"'";
+                        Statement stmt = con.createStatement();
+                        ResultSet rs = stmt.executeQuery(sql);
+                        while (rs.next()) {
+                            String getName = rs.getString("name");
+                            String getDiscription = rs.getString("discription");
+                            String getIngredients = rs.getString("ingredients");
+                            String getPrice = rs.getString("price");
+                            System.out.println("name="+getName);
+                            System.out.println("discription="+getDiscription);
+                            System.out.println("ingredients="+getIngredients);
+                            System.out.println("price="+getPrice+"\n");
+                        }
+                        }
+
+                    catch (Exception e) {
+                        System.out.println(e);
+                    }
                     break;
                 case 4:
                     System.out.println("delete selected");
+                    System.out.println("Enter the name : ");
+                    name = scanner.next();
+                    try {
+                        Class.forName("com.mysql.jdbc.Driver");
+                        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/recipedb","root","");
+                        String sql = "DELETE FROM `recipes` WHERE `name`= '"+name+"'";
+                        Statement stmt = con.createStatement();
+                        stmt.executeUpdate(sql);
+                        System.out.println("data deleted successfully");
+                    }
+                    catch (Exception e){
+                        System.out.println(e);
+                    }
                     break;
                 case 5:
                     System.out.println("update selected");
+                    System.out.println("enter the name:");
+                    name = scanner.next();
+                    System.out.println("enter the discription to be updated:");
+                    discription = scanner.next();
+                    System.out.println("enter the ingredients to be updated:");
+                    ingredients = scanner.next();
+                    System.out.println("enter the price to be updated:");
+                    price = scanner.nextInt();
+                    try{
+                        Class.forName("com.mysql.jdbc.Driver");
+                        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/recipedb", "root", "");
+                        String sql = "UPDATE `recipes` SET `name`='"+name+"',`discription`='"+discription+"',`ingredients`='"+ingredients+"',`price`='"+String.valueOf(price)+"' WHERE `name`='"+name+"'";
+                        Statement stmt = con.createStatement();
+                        stmt.executeUpdate(sql);
+                        System.out.println("Updated successfully");
+                    }
+                    catch (Exception e){
+                        System.out.println(e);
+                    }
+
                     break;
                 case 6:
                     System.out.println("Exit");
